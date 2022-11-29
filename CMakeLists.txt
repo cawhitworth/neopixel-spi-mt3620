@@ -12,4 +12,8 @@ azsphere_configure_api(TARGET_API_SET "14")
 add_executable (${PROJECT_NAME} main.c)
 target_link_libraries (${PROJECT_NAME} applibs pthread gcc_s c)
 
+set(TARGET_HARDWARE "mt3620_rdb")
+set(TARGET_DEFINITION "neopixel.json")
+azsphere_target_hardware_definition(${PROJECT_NAME} TARGET_DIRECTORY "HardwareDefinition" TARGET_DEFINITION "${TARGET_DEFINITION}")
+
 azsphere_target_add_image_package(${PROJECT_NAME})

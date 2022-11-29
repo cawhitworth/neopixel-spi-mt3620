@@ -5,6 +5,7 @@
   "EntryPoint": "/bin/app",
   "CmdArgs": [],
   "Capabilities": {
+    "SpiMaster": [ "$NPX_SPI" ],
     "AllowedApplicationConnections": []
   },
   "ApplicationType": "Default"

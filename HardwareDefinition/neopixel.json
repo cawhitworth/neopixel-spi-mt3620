@@ -1,0 +1,29 @@
+{
+    "Metadata": {
+        "Type": "Azure Sphere Hardware Definition",
+        "Version": 1
+    },
+    "Description":
+    {
+        "Name": "Neopixel",
+        "MainCoreHeaderFileTopContent": [
+        ]
+    },
+    "Imports" : [ {"Path": "mt3620_rdb.json"} ],
+    "Peripherals": [
+        { 
+            "Name": "NPX_SPI",
+            "Type": "SpiMaster",
+            "Mapping": "MT3620_RDB_HEADER4_ISU1_SPI",
+            "Comment": "Only uses MOSI on H4P11"
+        },
+        { 
+            "Name": "NPX_SPI_CS",
+            "Type": "int",
+            "Mapping": "MT3620_SPI_CS_A",
+            "Comment": "SPI CS A (not used)"
+        }
+    ]
+
+
+}
