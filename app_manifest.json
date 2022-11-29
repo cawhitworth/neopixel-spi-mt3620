@@ -1,0 +1,11 @@
+{
+  "SchemaVersion": 1,
+  "Name": "neopixel-spi",
+  "ComponentId": "facf9ab2-ba25-4601-9f1a-1d09754e1a74",
+  "EntryPoint": "/bin/app",
+  "CmdArgs": [],
+  "Capabilities": {
+    "AllowedApplicationConnections": []
+  },
+  "ApplicationType": "Default"
+}
