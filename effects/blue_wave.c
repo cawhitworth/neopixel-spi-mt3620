@@ -6,11 +6,11 @@
 
 #define NPHASES 6
 static float phases[NPHASES];
-static bool Initialized = false;
 static float WaveSize = 0.98f;
 
 static void initialize(void)
 {
+    static bool Initialized = false;
     if (!Initialized)
     {
         for(unsigned int phase = 0; phase < NPHASES; phase++) {

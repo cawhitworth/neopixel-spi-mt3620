@@ -53,7 +53,7 @@ int main(void)
 
 
     while(1==1) {
-        blue_wave(PixelBuffer, PIXBUFLEN, NPIX);
+        sparkle(PixelBuffer, PIXBUFLEN, NPIX);
 
         SPIMaster_WriteThenRead(spiFd, PixelBuffer, PIXBUFLEN, PixelBuffer, PIXBUFLEN);
         nanosleep(&sleep, 0);

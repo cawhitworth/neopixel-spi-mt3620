@@ -13,6 +13,7 @@ add_executable (${PROJECT_NAME}
     main.c
     pixels.c
     pixels.h
+    effects/sparkle.c
     effects/effects.h
     effects/blue_wave.c
     effects/rainbow.c
