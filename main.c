@@ -13,13 +13,19 @@
 #define FREQ 6400000
 #define TRESET 80e-6f
 
-static unsigned char pixel_buffer[8 * NPIX * BPP];
+#define RESETBUFLEN ((size_t)(FREQ * TRESET / 8))
+#define PIXBUFLEN 8 * NPIX * BPP
+
+static unsigned char reset_buffer[RESETBUFLEN];
+static unsigned char pixel_buffer[PIXBUFLEN];
 static unsigned char bit0 = 0b11000000;
 static unsigned char bit1 = 0b11110000;
 
 int plot(unsigned char pixel[3], unsigned int pix, unsigned char* p_buf, size_t p_buf_len) {
     int base = pix * BPP * 8;
-    size_t index[] = { 1, 0, 2 };
+
+    // Nanopixels in GRB order, of course
+    static const size_t index[] = { 1, 0, 2 };
 
     for(size_t idx = 0; idx<3; idx++) {
         if (base >= p_buf_len) {
@@ -45,35 +51,23 @@ int main(void)
     ret = SPIMaster_SetMode(spiFd, SPI_Mode_0); //Not needed
 
     // Reset
-    size_t resetBufLen = FREQ * TRESET / 8;
 
-    unsigned char* resetBuf = malloc(resetBufLen);
-    memset(resetBuf, 0, resetBufLen);
+    memset(reset_buffer, 0, RESETBUFLEN);
     
-    SPIMaster_WriteThenRead(spiFd, resetBuf, resetBufLen, resetBuf, resetBufLen);
+    SPIMaster_WriteThenRead(spiFd, reset_buffer, RESETBUFLEN, reset_buffer, RESETBUFLEN);
 
-    int base = 0;
-    for(int i = 0; i < NPIX; i++) {
-        for(int g = 0; g < 8; g++) {
-            pixel_buffer[base++] = bit0;
-        }
-        for(int r = 0; r < 8; r++) {
-            pixel_buffer[base++] = bit1;
-        }
-        for(int b = 0; b < 8; b++) {
-            pixel_buffer[base++] = bit0;
-        }
-    }
-
-    size_t len = sizeof(pixel_buffer);
+    // Update 50Hz
     struct timespec sleep = {
         .tv_sec = 0,
         .tv_nsec = 20000000,
     };
+
     float phase_r = 0.0f;
     float phase_g = 0.3 * 2 * 3.141f;
     float phase_b = 0.6 * 2 * 3.141f;
+
     while(1==1) {
+        
         for (int pix = 0; pix < NPIX; pix++) {
             float fpix = (float) pix / (float) NPIX;
             float fpix_r = fpix * 2 * 3.141;
@@ -83,20 +77,23 @@ int main(void)
             r = (r < 0) ? 0 : (r > 255) ? 255 : r;
             g = (g < 0) ? 0 : (g > 255) ? 255 : g;
             b = (b < 0) ? 0 : (b > 255) ? 255 : b;
+
+            //r *= 0.1; g *= 0.1; b *= 0.1;
             unsigned char p[] = { r, g, b };
-            plot(p, pix, pixel_buffer, len);
+            plot(p, pix, pixel_buffer, PIXBUFLEN);
         }
-        SPIMaster_WriteThenRead(spiFd, pixel_buffer, len, pixel_buffer, len);
+
+        SPIMaster_WriteThenRead(spiFd, pixel_buffer, PIXBUFLEN, pixel_buffer, PIXBUFLEN);
         nanosleep(&sleep, 0);
-        phase_r += 0.05;
-        phase_g += 0.05;
-        phase_b += 0.05;
+
+        phase_r += 0.01;
+        phase_g += 0.01;
+        phase_b += 0.01;
         if (phase_r > 2 * 3.141f) phase_r -= 2 * 3.141f;
         if (phase_g > 2 * 3.141f) phase_g -= 2 * 3.141f;
         if (phase_b > 2 * 3.141f) phase_b -= 2 * 3.141f;
     }
 
-    Log_Debug("Success: %d", ret);
     return 0;
 
 }
