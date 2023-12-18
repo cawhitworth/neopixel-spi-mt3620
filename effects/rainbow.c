@@ -2,6 +2,7 @@
 #include <math.h>
 
 #include "../pixels.h"
+#include "effects.h"
 
 void rainbow(char* pixel_buffer, size_t pixel_buffer_len, size_t npix)
 {

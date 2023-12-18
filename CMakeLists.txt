@@ -17,6 +17,7 @@ add_executable (${PROJECT_NAME}
     effects/effects.h
     effects/blue_wave.c
     effects/rainbow.c
+    effects/red_green.c
     )
 
 target_link_libraries (${PROJECT_NAME} applibs pthread gcc_s c)

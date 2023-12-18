@@ -14,7 +14,7 @@
 #include "effects/effects.h"
 #include "pixels.h"
 
-#define NPIX 60
+#define NPIX 100
 #define FREQ 6400000
 #define TRESET (0.00008)
 
@@ -53,7 +53,7 @@ int main(void)
 
 
     while(1==1) {
-        sparkle(PixelBuffer, PIXBUFLEN, NPIX);
+        red_green(PixelBuffer, PIXBUFLEN, NPIX);
 
         SPIMaster_WriteThenRead(spiFd, PixelBuffer, PIXBUFLEN, PixelBuffer, PIXBUFLEN);
         nanosleep(&sleep, 0);

@@ -25,7 +25,7 @@ static void initialize(void)
     }
 }
 
-void blue_wave(char* pixel_buffer, size_t pixel_buffer_len, size_t npix)
+void red_green(char* pixel_buffer, size_t pixel_buffer_len, size_t npix)
 {
     initialize();
 
@@ -33,18 +33,21 @@ void blue_wave(char* pixel_buffer, size_t pixel_buffer_len, size_t npix)
         float fpix = (float) pix / (float) npix;
         float fpix_r = fpix * 2.f * 3.141f;
 
-        float cr = 0.f;
+        float cr = 0.5f;
         float cg = 0.f;
-        float cb = 0.7f;
+        float cb = 0.f;
 
         for(unsigned int phase = 0; phase < NPHASES; phase ++) {
             float h = sinf(fpix_r + phases[phase]);
             h = (h < WaveSize) ? 0.f : (h - WaveSize) * (1.f / (1.f-WaveSize));
 
-            cr += h;
+            cr -= h/2;
             cg += h;
         }
 
+        if (cr < 0.f) cr = 0.f;
+        if (cg < 0.f) cg = 0.f;
+        if (cb < 0.f) cb = 0.f;
         if (cr > 1.f) cr = 1.f;
         if (cg > 1.f) cg = 1.f;
         if (cb > 1.f) cb = 1.f;

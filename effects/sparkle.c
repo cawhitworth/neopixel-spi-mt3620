@@ -4,8 +4,9 @@
 #include <string.h>
 
 #include "../pixels.h"
+#include "effects.h"
 
-#define NSPARKLES 60
+#define NSPARKLES 50
 
 typedef struct {
     int position;
@@ -26,10 +27,6 @@ static sparkle_t sparkles[NSPARKLES];
 static pix_t* display;
 static size_t display_size;
 
-static float frand(void)
-{
-    return ((float)rand() / RAND_MAX);
-}
 
 static sparkle_t new_sparkle(size_t npix)
 {
